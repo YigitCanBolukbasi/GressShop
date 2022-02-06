@@ -11,6 +11,10 @@ body {
   padding-bottom: 10rem;
 }
 
+.gressTitle {
+ color: white;
+}
+
 button {
   background: transparent;
   border: none;
