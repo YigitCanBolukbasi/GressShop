@@ -146,6 +146,27 @@ cartContent.addEventListener("click", () => {
     let id = removeItem.dataset.id;
     removeItem.parentElement.parentElement.parentElement.remove();
     removeItem(id);
+  } else if (event.target.classList.contains("quantity-minus")) {
+    let lowerAmount = event.target;
+    let id = lowerAmount.dataset.id;
+    let tempItem = cart.find((item) => item.id === id);
+    tempItem.amount = tempItem.amount - 1;
+    if (tempItem.amount > 0) {
+      saveCart(cart);
+      saveCartValues(cart);
+      lowerAmount.nextElementSibling.innerText = tempItem.amount;
+    } else {
+      lowerAmount.parentElement.parentElement.parentElement.remove();
+      this.removeItem(id);
+    }
+  } else if (event.target.classList.contains("quantity-plus")) {
+    let addAmount = event.target;
+    let id = addAmount.dataset.id;
+    let tempItem = cart.find((item) => item.id === id);
+    tempItem.amount = tempItem.amount + 1;
+    saveCart(cart);
+    saveCartValues(cart);
+    addAmount.previousElementSibling.innerText = tempItem.amount;
   }
 });
 
