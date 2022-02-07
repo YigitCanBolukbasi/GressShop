@@ -75,6 +75,7 @@ const getProduct = (id) => {
 
 const saveCart = (cart) => {
   localStorage.setItem("cart", JSON.stringify(cart));
+  console.log(" ilk hali", cart);
 };
 
 const saveCartValues = (cart) => {
@@ -121,11 +122,6 @@ const addCartItem = (item) => {
   cartContent.appendChild(li);
 };
 
-// const getCart = () => {
-// localStorage.getItem("cart")
-//     ? JSON.parse(localStorage.getItem("cart"))
-//     : [];  return
-// };
 const populateCart = (cart) => {
   cart.forEach((item) => addCartItem(item));
 };
@@ -138,7 +134,43 @@ const setupApp = () => {
   console.log(cart);
 };
 
-const cartLogic = () => {};
+const cartLogic = () => {
+  clearCartBtn.addEventListener("click", () => {
+    clearCart();
+  });
+};
+
+cartContent.addEventListener("click", () => {
+  if (event.target.classList.contains("cart-remove-btn")) {
+    let removeItem = event.target;
+    let id = removeItem.dataset.id;
+    removeItem.parentElement.parentElement.parentElement.remove();
+    removeItem(id);
+  }
+});
+
+// kart silme kismi
+const clearCart = () => {
+  let cartItems = cart.map((item) => {
+    item.id;
+  });
+  cartItems.forEach((id) => removeItem(id));
+  while (cartContent.children.length > 0) {
+    cartContent.removeChild(cartContent.children[0]);
+  }
+};
+
+const removeItem = (id) => {
+  cart = cart.filter((item) => item.id === id);
+  saveCartValues(cart);
+  saveCart(cart);
+  let button = getSingleButton(id);
+  button.disabled = false;
+  button.style.opacity = "1";
+};
+const getSingleButton = (id) => {
+  return buttonsDOM.find((button) => button.dataset.id === id);
+};
 
 const sendButtons = (getBagButtons) => {
   getBagButtons();
@@ -146,6 +178,7 @@ const sendButtons = (getBagButtons) => {
 
 document.addEventListener("DOMContentLoaded", () => {
   fetchData();
+  cartLogic();
   setupApp();
   UI();
   sendButtons();
