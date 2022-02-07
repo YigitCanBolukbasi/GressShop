@@ -16,15 +16,11 @@ const fetchData = async () => {
     let data = await result.json();
     let products = data;
     UI(products);
-    console.log(products, "data");
     return products;
-  } catch (err) {
-    console.log(err, "error var");
-  }
+  } catch (err) {}
 };
 
 const UI = (products) => {
-  console.log(" productssssssss", products);
   let result = "";
   products.forEach((element) => {
     result += `
@@ -50,10 +46,8 @@ const UI = (products) => {
   const getBagButtons = () => {
     const buttons = [...document.querySelectorAll(".btn-add-to-cart")];
     buttonsDOM = buttons;
-    console.log("butonlarrrr", buttonsDOM);
     buttons.forEach((button) => {
       let id = button.dataset.id;
-      console.log(id, "button idleri");
       let inCart = cart.find((item) => item.id === id);
       if (inCart) {
         button.setAttribute("disabled", "disabled");
@@ -127,12 +121,32 @@ const addCartItem = (item) => {
   cartContent.appendChild(li);
 };
 
+// const getCart = () => {
+// localStorage.getItem("cart")
+//     ? JSON.parse(localStorage.getItem("cart"))
+//     : [];  return
+// };
+const populateCart = (cart) => {
+  cart.forEach((item) => addCartItem(item));
+};
+const setupApp = () => {
+  cart = localStorage.getItem("cart")
+    ? JSON.parse(localStorage.getItem("cart"))
+    : [];
+  saveCartValues(cart);
+  populateCart(cart);
+  console.log(cart);
+};
+
+const cartLogic = () => {};
+
 const sendButtons = (getBagButtons) => {
   getBagButtons();
 };
 
 document.addEventListener("DOMContentLoaded", () => {
   fetchData();
+  setupApp();
   UI();
   sendButtons();
 });
